@@ -9,9 +9,11 @@ import SwiftUI
 
 @main
 struct BoBApp: App {
+    @StateObject private var dataController = DataController()
+
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            ContentView(vm: BobAppViewModel(context: dataController.container.viewContext))
         }
     }
 }
