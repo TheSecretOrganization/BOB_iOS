@@ -93,6 +93,13 @@ class BobAppViewModel: ObservableObject {
         ).jpegData(compressionQuality: 50)
         try? moc.save()
     }
+
+    func changeCamera() {
+        let tmp = album[index].front
+        album[index].front = album[index].rear
+        album[index].rear = tmp
+        album.swapAt(index, index)
+    }
 }
 
 // MARK: - GETTER
@@ -150,10 +157,12 @@ extension BobAppViewModel {
 
 extension BobAppViewModel {
     func increaseIndex() {
+        guard !album.isEmpty else { return }
         index = min(index + 1, album.count - 1)
         pos = getPos()
     }
     func decreaseIndex() {
+        guard !album.isEmpty else { return }
         index = max(index - 1, 0)
         pos = getPos()
     }

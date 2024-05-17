@@ -57,8 +57,8 @@ struct ImageView: View {
     var body: some View {
         GeometryReader { geo in
             VStack {
-                if let img = vm.getRearPicture() {
-                    Image(uiImage: img)
+                if let rear = vm.getRearPicture(), let frt = vm.getFrontPicture(){
+                    Image(uiImage: rear)
                         .resizable()
                         .scaledToFit()
                         .onTapGesture { loc in
@@ -100,30 +100,27 @@ struct ImageView: View {
                             GrilleView()
                         }
                         .overlay {
-                            Image(uiImage: vm.getFrontPicture()!.withRoundedCorners(radius: 142))
+                            Image(uiImage: frt.withRoundedCorners(radius: 142))
                                 .resizable()
                                 .scaledToFit()
-                                .frame(width: (geo.size.width / vm.getFrontPicture()!.size.width) * (vm.getFrontPicture()!.size.width / 2.6),
-                                       height: (geo.size.height  * 0.68 / vm.getFrontPicture()!.size.height) * (vm.getFrontPicture()!.size.height / 2.6))
+                                .frame(width: (geo.size.width / frt.size.width) * (frt.size.width / 2.6),
+                                       height: (geo.size.height  * 0.68 / frt.size.height) * (frt.size.height / 2.6))
                                 .aligned(vm.pos)
 //                                            .animation(.easeInOut(duration: 0.5), value: pos)
                                 .padding(6)
+                                .onTapGesture {
+                                    vm.changeCamera()
+                                }
                         }
                 } else {
                     Color.gray
+                        .frame(width: geo.size.width)
                         .scaledToFill()
                 }
                 CustomModalView(vm: vm)
-                    .frame(height: geo.size.height * 0.3)
+                    .frame(width: geo.size.width, height: geo.size.height * 0.3, alignment: .bottom)
             }
         }
     }
 
 }
-
-
-//#Preview {
-//    ImageView()
-//}
-
-
