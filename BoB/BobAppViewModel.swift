@@ -14,6 +14,8 @@ class BobAppViewModel: ObservableObject {
 
     @Published var album: [PictureData]
     @Published var state: Int = 0
+    @Published var isLoading: Bool = false
+    @Published var cantDl: Bool = false
     @Published var index: Int = 0
     @Published var pos: AlignModifier.Alignment = .topLeft
 
@@ -23,9 +25,12 @@ class BobAppViewModel: ObservableObject {
         // FetchRequest initialisation
         let request: NSFetchRequest<PictureData> = PictureData.fetchRequest()
         request.sortDescriptors = []
+//        self.album = []
         self.album = (try? context.fetch(request)) ?? []
-        self.index = album.count - 1
+
+        self.index = max(album.count - 1, 0)
     }
+
     func setImage() {
         let image = PictureData(context: moc)
         image.posX = 50
@@ -82,8 +87,8 @@ class BobAppViewModel: ObservableObject {
     }
 
     func mergeImage() {
-        guard let rear = UIImage(data: album[index].rear!) else { return }
-        guard let front = UIImage(data: album[index].front!) else { return }
+        guard let rear = UIImage(data: album[index].rear!) else { errorHandling(); return }
+        guard let front = UIImage(data: album[index].front!) else { errorHandling(); return }
         album[index].bigPicture = rear.overlayWith(
             image: front.withRoundedCorners(radius: 142),
             posX: CGFloat(album[index].posX),
@@ -100,25 +105,40 @@ class BobAppViewModel: ObservableObject {
         album[index].rear = tmp
         album.swapAt(index, index)
     }
+
+    func createImage(image1: UIImage, image2: UIImage) {
+        let image = PictureData(context: moc)
+        image.rear = image1.heicData()
+        image.widthRear = Int64(image1.size.width)
+        image.heightRear = Int64(image1.size.height)
+        image.front = image2.heicData()
+        image.widthFront = Int64(image2.size.width)
+        image.heightFront = Int64(image2.size.height)
+        image.posX = 50
+        image.posY = 50
+        try? moc.save()
+        album.append(image)
+        index = album.count - 1
+    }
 }
 
 // MARK: - GETTER
 
 extension BobAppViewModel {
     func getBigPicture() -> UIImage? {
-        guard !album.isEmpty else { return nil }
+        guard !album.isEmpty else { errorHandling(); return nil }
         mergeImage()
-        guard let picture = album[index].bigPicture else { return nil }
+        guard let picture = album[index].bigPicture else { errorHandling(); return nil }
         return UIImage(data: picture)
     }
     func getRearPicture() -> UIImage? {
-        guard !album.isEmpty else { return nil }
-        guard let picture = album[index].rear else { return nil }
+        guard !album.isEmpty else { errorHandling(); return nil }
+        guard let picture = album[index].rear else { errorHandling(); return nil }
         return UIImage(data: picture)
     }
     func getFrontPicture() -> UIImage? {
-        guard !album.isEmpty else { return nil }
-        guard let picture = album[index].front else { return nil }
+        guard !album.isEmpty else { errorHandling(); return nil }
+        guard let picture = album[index].front else { errorHandling(); return nil }
         return UIImage(data: picture)
     }
     func getPosX() -> CGFloat {
@@ -176,18 +196,55 @@ extension BobAppViewModel {
 
 extension BobAppViewModel {
     func dlFrontPicture() {
+        isLoading = true
         if let frt = getFrontPicture() {
-            UIImageWriteToSavedPhotosAlbum(frt, self, nil, nil)
+            let imageSaver = ImageSaver()
+            imageSaver.writeToPhotoAlbum(image: frt) { [self] result in
+                switch result {
+                case .success:
+                    isLoading = false
+                    case .failure(_):
+                    cantDl = true
+                }
+                isLoading = false
+            }
         }
     }
     func dlRearPicture() {
-        if let frt = getRearPicture() {
-            UIImageWriteToSavedPhotosAlbum(frt, self, nil, nil)
+        isLoading = true
+        if let rear = getRearPicture() {
+            let imageSaver = ImageSaver()
+            imageSaver.writeToPhotoAlbum(image: rear) { [self] result in
+                switch result {
+                case .success:
+                    isLoading = false
+                    case .failure(_):
+                    cantDl = true
+                }
+                isLoading = false
+            }
         }
     }
     func dlMergedPicture() {
+        isLoading = true
         if let bp = getBigPicture() {
-            UIImageWriteToSavedPhotosAlbum(bp, self, nil, nil)
+            let imageSaver = ImageSaver()
+            imageSaver.writeToPhotoAlbum(image: bp) { [self] result in
+                switch result {
+                case .success:
+                    isLoading = false
+                    case .failure(_):
+                    cantDl = true
+                }
+                isLoading = false
+            }
         }
+    }
+}
+
+extension BobAppViewModel {
+    func errorHandling() {
+        isLoading = false
+        cantDl = true
     }
 }

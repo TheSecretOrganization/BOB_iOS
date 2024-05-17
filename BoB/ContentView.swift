@@ -7,21 +7,17 @@
 
 import SwiftUI
 import UIKit
+import Combine
 
 struct ContentView: View {
     @Environment(\.managedObjectContext) var moc
     @StateObject var vm: BobAppViewModel
-    @State private var isCameraPresented = false
-    @State private var isDone = false
 
     var body: some View {
         VStack {
-                ImageView(vm: vm)
+            ImageView(vm: vm)
         }
-        .alert("Done", isPresented: $isDone, actions: {
-            Text("Done")
-        }
-        )
+        .alert("An error as occured", isPresented: $vm.cantDl, actions: {})
         .fullScreenCover(isPresented: .constant(vm.state == 1), onDismiss: {
             if (vm.album[vm.index].rear != nil || vm.album[vm.index].front != nil) {
                 vm.state = 2

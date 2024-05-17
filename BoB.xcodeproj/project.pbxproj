@@ -11,6 +11,8 @@
 		6067BEA32BF4EB3F00DFBE39 /* AlignModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6067BEA22BF4EB3F00DFBE39 /* AlignModifier.swift */; };
 		6067BEA52BF4ED8E00DFBE39 /* GrilleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6067BEA42BF4ED8E00DFBE39 /* GrilleView.swift */; };
 		6067BEA72BF5046800DFBE39 /* CustomModalView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6067BEA62BF5046700DFBE39 /* CustomModalView.swift */; };
+		6067BEA92BF7557500DFBE39 /* ImageSaver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6067BEA82BF7557500DFBE39 /* ImageSaver.swift */; };
+		6067BEAB2BF758C500DFBE39 /* ImagePickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6067BEAA2BF758C500DFBE39 /* ImagePickerView.swift */; };
 		60FFD6A82BDF9CD20026B002 /* PictureData.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 60FFD6A62BDF9CD20026B002 /* PictureData.xcdatamodeld */; };
 		60FFD6AA2BDF9EDE0026B002 /* DataController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60FFD6A92BDF9EDE0026B002 /* DataController.swift */; };
 		60FFD6AC2BDF9F810026B002 /* CameraView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60FFD6AB2BDF9F810026B002 /* CameraView.swift */; };
@@ -27,6 +29,8 @@
 		6067BEA22BF4EB3F00DFBE39 /* AlignModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlignModifier.swift; sourceTree = "<group>"; };
 		6067BEA42BF4ED8E00DFBE39 /* GrilleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GrilleView.swift; sourceTree = "<group>"; };
 		6067BEA62BF5046700DFBE39 /* CustomModalView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomModalView.swift; sourceTree = "<group>"; };
+		6067BEA82BF7557500DFBE39 /* ImageSaver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = ImageSaver.swift; path = BoB/ImageSaver.swift; sourceTree = "<group>"; };
+		6067BEAA2BF758C500DFBE39 /* ImagePickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = ImagePickerView.swift; path = BoB/ImagePickerView.swift; sourceTree = "<group>"; };
 		60FFD6A72BDF9CD20026B002 /* History.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = History.xcdatamodel; sourceTree = "<group>"; };
 		60FFD6A92BDF9EDE0026B002 /* DataController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataController.swift; sourceTree = "<group>"; };
 		60FFD6AB2BDF9F810026B002 /* CameraView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraView.swift; sourceTree = "<group>"; };
@@ -64,6 +68,8 @@
 		7AF74ECA2BCE71DC008695D6 = {
 			isa = PBXGroup;
 			children = (
+				6067BEAA2BF758C500DFBE39 /* ImagePickerView.swift */,
+				6067BEA82BF7557500DFBE39 /* ImageSaver.swift */,
 				7AF74ED52BCE71DC008695D6 /* BoB */,
 				7AF74ED42BCE71DC008695D6 /* Products */,
 				60FFD6B12BDFB0840026B002 /* Frameworks */,
@@ -185,7 +191,9 @@
 				6067BEA72BF5046800DFBE39 /* CustomModalView.swift in Sources */,
 				60FFD6AE2BDFA0530026B002 /* Extension.swift in Sources */,
 				6067BEA52BF4ED8E00DFBE39 /* GrilleView.swift in Sources */,
+				6067BEA92BF7557500DFBE39 /* ImageSaver.swift in Sources */,
 				60FFD6AC2BDF9F810026B002 /* CameraView.swift in Sources */,
+				6067BEAB2BF758C500DFBE39 /* ImagePickerView.swift in Sources */,
 				60FFD6B02BDFAF6B0026B002 /* BobAppViewModel.swift in Sources */,
 				7AF74ED72BCE71DC008695D6 /* BoBApp.swift in Sources */,
 				6067BEA32BF4EB3F00DFBE39 /* AlignModifier.swift in Sources */,
