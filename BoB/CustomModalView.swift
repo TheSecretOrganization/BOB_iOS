@@ -101,16 +101,31 @@ struct UploadView: View {
 
 struct SeePictureView: View {
     @ObservedObject var vm: BobAppViewModel
+    @State var isPresented: Bool = false
+    @State var slider: Double = 0
+    @State private var isLongPressing = false
 
     var body: some View {
         HStack(spacing: 42) {
             Button {
-                vm.decreaseIndex()
+                if !isLongPressing {
+                    vm.decreaseIndex()
+                }
             } label: {
                 Image(systemName: "chevron.left")
                     .resizable()
                     .frame(width: 42, height: 42)
             }
+            .simultaneousGesture(
+                LongPressGesture(minimumDuration: 1.0)
+                    .onEnded { _ in
+                        isLongPressing = true
+                        isPresented = true
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+                            isLongPressing = false
+                        }
+                    }
+            )
 
             Button {
                 vm.takePicture()
@@ -122,15 +137,41 @@ struct SeePictureView: View {
 
 
             Button {
-                vm.increaseIndex()
+                if !isLongPressing {
+                    vm.increaseIndex()
+                }
             } label: {
                 Image(systemName: "chevron.right")
                     .resizable()
                     .frame(width: 42, height: 42)
             }
+            .simultaneousGesture(
+                LongPressGesture(minimumDuration: 1.0)
+                    .onEnded { _ in
+                        isLongPressing = true
+                        isPresented = true
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+                            isLongPressing = false
+                        }
+                    }
+            )
         }
+        .sheet(isPresented: $isPresented, onDismiss: {
+            vm.index = Int(slider)
+        } , content: {
+            VStack {
+                Text("\(Int(slider))")
+                Slider(value: $slider, in: 0...Double(vm.album.count - 1), step: 1)
+                    .padding(.horizontal, 10)
+            }
+            .task {
+                slider = Double(vm.index)
+            }
+            .presentationDetents([.fraction(0.2)])
+        })
     }
 }
+
 struct DlPictureView: View {
     @ObservedObject var vm: BobAppViewModel
 
