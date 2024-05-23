@@ -119,11 +119,9 @@ struct SeePictureView: View {
             .simultaneousGesture(
                 LongPressGesture(minimumDuration: 1.0)
                     .onEnded { _ in
+                        guard vm.album.count > 1 else { return }
                         isLongPressing = true
                         isPresented = true
-                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
-                            isLongPressing = false
-                        }
                     }
             )
 
@@ -148,16 +146,16 @@ struct SeePictureView: View {
             .simultaneousGesture(
                 LongPressGesture(minimumDuration: 1.0)
                     .onEnded { _ in
+                        guard vm.album.count > 1 else { return }
                         isLongPressing = true
                         isPresented = true
-                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
-                            isLongPressing = false
-                        }
                     }
             )
         }
         .sheet(isPresented: $isPresented, onDismiss: {
             vm.index = Int(slider)
+            vm.pos = vm.getPos()
+            isLongPressing = false
         } , content: {
             VStack {
                 Text("\(Int(slider))")
@@ -212,5 +210,3 @@ struct DlPictureView: View {
         }
     }
 }
-
-

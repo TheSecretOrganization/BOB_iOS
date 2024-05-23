@@ -32,7 +32,7 @@ struct ContentView: View {
             vm.state = 0
             if (vm.album.last?.front != nil && vm.album.last?.rear != nil) {
                 vm.index = vm.album.count - 1
-//                vm.mergeImage()
+                vm.pos = .topLeft
             } else {
                 vm.album.removeLast()
             }
@@ -102,7 +102,6 @@ struct ImageView: View {
                                 .frame(width: (geo.size.width / frt.size.width) * (frt.size.width / 2.6),
                                        height: (geo.size.height  * 0.68 / frt.size.height) * (frt.size.height / 2.6))
                                 .aligned(vm.pos)
-//                                            .animation(.easeInOut(duration: 0.5), value: pos)
                                 .padding(6)
                                 .onTapGesture {
                                     vm.changeCamera()

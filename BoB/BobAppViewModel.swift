@@ -29,12 +29,16 @@ class BobAppViewModel: ObservableObject {
         self.album = (try? context.fetch(request)) ?? []
 
         self.index = max(album.count - 1, 0)
+        if album.count > 1 {
+            self.pos = getPos()
+        }
     }
 
     func setImage() {
         let image = PictureData(context: moc)
         image.posX = 50
         image.posY = 50
+        image.pos = 0
         try? moc.save()
         self.album.append(image)
     }
@@ -46,6 +50,8 @@ class BobAppViewModel: ObservableObject {
         index = max(index - 1, 0)
         do {
             try moc.save()
+            guard !album.isEmpty else { return }
+            pos = getPos()
         } catch {
             let nsError = error as NSError
             fatalError("Erreur non résolue \(nsError), \(nsError.userInfo)")
@@ -119,6 +125,7 @@ class BobAppViewModel: ObservableObject {
         try? moc.save()
         album.append(image)
         index = album.count - 1
+        pos = .topLeft
     }
 }
 
@@ -223,6 +230,8 @@ extension BobAppViewModel {
                 }
                 isLoading = false
             }
+        } else {
+            isLoading = false
         }
     }
     func dlMergedPicture() {
@@ -244,7 +253,9 @@ extension BobAppViewModel {
 
 extension BobAppViewModel {
     func errorHandling() {
-        isLoading = false
-        cantDl = true
+        if isLoading {
+            cantDl = true
+            isLoading = false
+        }
     }
 }
